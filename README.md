@@ -1,58 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bakso Atmo
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web untuk mendukung pengelolaan operasional dan layanan Bakso Atmo.
 
-## About Laravel
+## Teknologi
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Framework:** Laravel 13
+- **PHP:** 8.5+
+- **Database:** MySQL
+- **Frontend:** Blade, HTML, CSS, JavaScript
+- **Dependency Manager:** Composer dan npm
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Persyaratan Sistem
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Pastikan perangkat telah memiliki:
 
-## Learning Laravel
+- PHP 8.5 atau versi yang kompatibel dengan proyek.
+- Composer.
+- Node.js dan npm.
+- MySQL.
+- Git.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Instalasi
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone repository:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+    ```bash
+    git clone <repository-url>
+    ```
 
-## Agentic Development
+2. Masuk ke direktori proyek:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+    ```bash
+    cd bakso_atmo
+    ```
+
+3. Instal dependency PHP:
+
+    ```bash
+    composer install
+    ```
+
+4. Instal dependency frontend:
+
+    ```bash
+    npm install
+    ```
+
+5. Salin file konfigurasi environment:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    Pada Windows, file `.env.example` juga dapat disalin secara manual menjadi `.env`.
+
+6. Buat application key:
+
+    ```bash
+    php artisan key:generate
+    ```
+
+7. Buat database MySQL dengan nama yang sesuai konfigurasi `.env`, kemudian sesuaikan konfigurasi koneksi database pada file tersebut.
+
+8. Jalankan migrasi dan seeder:
+
+    ```bash
+    php artisan migrate --seed
+    ```
+
+## Menjalankan Aplikasi
+
+Jalankan server Laravel:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Jalankan frontend development server pada terminal terpisah:
 
-## Contributing
+```bash
+npm run dev
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Aplikasi dapat diakses melalui:
 
-## Code of Conduct
+```text
+http://localhost:8000
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Fitur Sprint 1
 
-## Security Vulnerabilities
+Sprint 1 berfokus pada fondasi aplikasi, autentikasi, dan manajemen pengguna.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Login menggunakan email dan password.
+- Logout dengan invalidasi session.
+- Pembatasan percobaan login.
+- Pemeriksaan status akun aktif.
+- Middleware autentikasi dan otorisasi berdasarkan role.
+- Pengubahan password.
+- Manajemen pengguna oleh admin.
+- Pencegahan penonaktifan akun admin sendiri.
+- Pencegahan penghapusan akun sendiri.
 
-## License
+### Role Pengguna
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Role       | Keterangan                                           |
+| ---------- | ---------------------------------------------------- |
+| `admin`    | Memiliki akses ke manajemen pengguna dan area admin. |
+| `staff`    | Pengguna operasional.                                |
+| `customer` | Pengguna pelanggan.                                  |
+
+## Akun Pengujian
+
+Seeder menyediakan akun berikut untuk keperluan pengujian lokal:
+
+| Email                           | Password            | Role     | Status      |
+| ------------------------------- | ------------------- | -------- | ----------- |
+| `admin.test@baksoatmo.local`    | `BaksoAtmoTest123!` | admin    | Aktif       |
+| `inactive.test@baksoatmo.local` | `BaksoAtmoTest123!` | customer | Tidak aktif |
+
+Jalankan ulang seeder menggunakan:
+
+```bash
+php artisan db:seed
+```
+
+**Catatan:** Akun tersebut hanya untuk pengembangan dan pengujian lokal. Jangan gunakan kredensial pengujian sebagai akun produksi.
+
+## Automated Testing
+
+Jalankan seluruh pengujian menggunakan:
+
+```bash
+php artisan test
+```
+
+Pengujian Sprint 1 mencakup:
+
+- Autentikasi.
+- Otorisasi berdasarkan role.
+- Pengubahan password.
+- Manajemen pengguna admin.
+
+## Struktur Pengembangan
+
+Pengembangan proyek menggunakan pendekatan sprint dan feature branch.
+
+Setiap kontributor mengerjakan fitur pada branch masing-masing. Integrasi antarbranch dan sprint dilakukan oleh Project Leader setelah proses review dan pengujian.
+
+## Status Proyek
+
+Proyek sedang dalam tahap pengembangan. Fitur akan ditambahkan secara bertahap sesuai pembagian sprint.
+
+---
+
+**Bakso Atmo — Project Development**
