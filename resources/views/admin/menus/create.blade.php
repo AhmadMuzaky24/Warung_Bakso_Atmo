@@ -65,7 +65,7 @@
                             class="form-control"
                             value="{{ old('price') }}"
                             min="0"
-                            step="1"
+                            step="100"
                             placeholder="Contoh: 25000"
                             required
                         >

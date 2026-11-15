@@ -65,7 +65,7 @@
                             class="form-control"
                             value="{{ old('price', $menu->price) }}"
                             min="0"
-                            step="1"
+                            step="100"
                             required
                         >
                         @error('price')

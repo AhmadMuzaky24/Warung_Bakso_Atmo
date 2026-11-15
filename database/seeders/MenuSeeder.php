@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class MenuSeeder extends Seeder
 {
     public function run(): void
     {
+        Storage::disk('public')->makeDirectory('menus');
+
         $bakso = Category::where('name', 'Bakso Spesial')->first();
         $mie = Category::where('name', 'Mie & Bihun')->first();
         $katering = Category::where('name', 'Paket Katering')->first();
@@ -17,6 +20,7 @@ class MenuSeeder extends Seeder
 
         $menus = [
             [
+                'seed_key' => 'menu-1',
                 'category_id' => $bakso->id,
                 'name' => 'Bakso Urat Spesial',
                 'description' => 'Bakso urat sapi kenyal disajikan dengan kuah kaldu gurih.',
@@ -24,6 +28,7 @@ class MenuSeeder extends Seeder
                 'is_available' => true,
             ],
             [
+                'seed_key' => 'menu-2',
                 'category_id' => $bakso->id,
                 'name' => 'Bakso Halus Komplit',
                 'description' => 'Bakso daging halus lengkap dengan tahu bakso dan siomay.',
@@ -31,6 +36,7 @@ class MenuSeeder extends Seeder
                 'is_available' => true,
             ],
             [
+                'seed_key' => 'menu-3',
                 'category_id' => $mie->id,
                 'name' => 'Mie Ayam Bakso',
                 'description' => 'Mie ayam berbumbu kecap manis gurih dengan topping bakso.',
@@ -38,6 +44,7 @@ class MenuSeeder extends Seeder
                 'is_available' => true,
             ],
             [
+                'seed_key' => 'menu-4',
                 'category_id' => $katering->id,
                 'name' => 'Paket Katering Bakso 50 Porsi',
                 'description' => 'Paket prasmanan bakso lengkap dengan mangkuk, sendok, dan pelengkap.',
@@ -45,6 +52,7 @@ class MenuSeeder extends Seeder
                 'is_available' => true,
             ],
             [
+                'seed_key' => 'menu-5',
                 'category_id' => $katering->id,
                 'name' => 'Paket Katering Bakso 100 Porsi',
                 'description' => 'Paket prasmanan acara besar siap saji di lokasi.',
@@ -52,6 +60,7 @@ class MenuSeeder extends Seeder
                 'is_available' => true,
             ],
             [
+                'seed_key' => 'menu-6',
                 'category_id' => $minuman->id,
                 'name' => 'Es Teh Manis',
                 'description' => 'Teh melati seduh segar disajikan dingin.',
@@ -60,11 +69,35 @@ class MenuSeeder extends Seeder
             ],
         ];
 
-        foreach ($menus as $menu) {
+        foreach ($menus as $item) {
+            $imagePath = $this->copySeedImage($item['seed_key']);
+
             Menu::updateOrCreate(
-                ['name' => $menu['name']],
-                $menu
+                ['name' => $item['name']],
+                [
+                    'category_id' => $item['category_id'],
+                    'description' => $item['description'],
+                    'price' => $item['price'],
+                    'image_path' => $imagePath,
+                    'is_available' => $item['is_available'],
+                ]
             );
         }
+    }
+
+    private function copySeedImage(string $seedKey): ?string
+    {
+        $matches = glob(database_path("seeders/images/{$seedKey}.*"));
+
+        if (empty($matches) || ! is_file($matches[0])) {
+            return null;
+        }
+
+        $sourcePath = $matches[0];
+        $targetPath = 'menus/' . basename($sourcePath);
+
+        Storage::disk('public')->put($targetPath, file_get_contents($sourcePath));
+
+        return $targetPath;
     }
 }
