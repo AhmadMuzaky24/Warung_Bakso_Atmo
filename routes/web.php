@@ -3,6 +3,8 @@
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\MenuController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])
@@ -17,6 +19,10 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
     Route::resource('users', UserController::class)
+        ->except(['show']);
+    Route::resource('categories', CategoryController::class)
+        ->except(['show']);
+    Route::resource('menus', MenuController::class)
         ->except(['show']);
 });
 
