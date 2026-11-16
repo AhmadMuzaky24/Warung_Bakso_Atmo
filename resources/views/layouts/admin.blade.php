@@ -36,6 +36,18 @@
                             <span class="nav-icon">♙</span>
                             <span>Manajemen Pengguna</span>
                         </a>
+
+                        <a href="{{ route('admin.categories.index') }}"
+                           class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                            <span class="nav-icon">▤</span>
+                            <span>Kategori Menu</span>
+                        </a>
+
+                        <a href="{{ route('admin.menus.index') }}"
+                           class="nav-link {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}">
+                            <span class="nav-icon">♨</span>
+                            <span>Daftar Menu</span>
+                        </a>
                     @endif
                 </nav>
             </div>

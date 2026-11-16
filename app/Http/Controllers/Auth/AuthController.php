@@ -70,7 +70,7 @@ class AuthController extends Controller
         return view('auth.change-password');
     }
 
-    public function updatePassword(ChangePasswordRequest $request): RedirectResponseq
+    public function updatePassword(ChangePasswordRequest $request): RedirectResponse
     {
         $request->user()->update([
             'password' => $request->validated('password'),
