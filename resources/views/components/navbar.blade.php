@@ -1,6 +1,6 @@
 @props(['overlay' => false])
 
-<header class="navbar {{ $overlay ? 'navbar--overlay' : 'navbar--solid' }}">
+<header id="site-navbar" class="navbar {{ $overlay ? 'navbar--overlay' : 'navbar--solid' }}">
     <div class="container navbar__inner">
         <a href="{{ route('public.home') }}" class="navbar__brand">
             {{ config('bakso_atmo.name') }}

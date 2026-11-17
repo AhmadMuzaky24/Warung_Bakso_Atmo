@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Public\LocationController;
+use App\Http\Controllers\Public\CatalogController;
 
 Route::get('/', [HomeController::class, 'index'])->name('public.home');
 
@@ -43,3 +45,11 @@ Route::middleware(['auth', 'role:admin,staff,customer'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/lokasi', [LocationController::class, 'index'])->name('public.locations');
+
+Route::get('/menu', [CatalogController::class, 'index'])
+    ->name('public.catalog.index');
+
+Route::get('/menu/{menu}', [CatalogController::class, 'show'])
+    ->name('public.catalog.show');

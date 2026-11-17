@@ -1,4 +1,16 @@
 <footer class="footer">
+    {{-- CTA KATERING --}}
+    <div class="cta">
+        <div class="container cta__inner">
+            <div>
+                <h2>Ada acara keluarga atau kantor?</h2>
+                <p>Booking katering dengan jadwal H-2 dan DP 50%, konfirmasi lewat WhatsApp.</p>
+            </div>
+            {{-- TODO: arahkan ke route katering Customer (Sprint 4) --}}
+            <a href="#" class="btn btn--light">Ajukan Pesanan Katering</a>
+        </div>
+    </div>
+
     <div class="container footer__grid">
         <div>
             <h3 class="footer__brand">{{ config('bakso_atmo.name') }}</h3>
@@ -23,9 +35,16 @@
         </div>
 
         <div>
-            <h4>Kontak</h4>
-            {{-- TODO: ganti dengan data kontak asli --}}
-            <p>Alamat: (isi alamat)<br>WhatsApp: (isi nomor)</p>
+            <h4>Lokasi</h4>
+            <ul>
+                @foreach (config('bakso_atmo.branches') as $branch)
+                    <li>
+                        <a href="{{ $branch['maps'] }}" target="_blank" rel="noopener">
+                            {{ $branch['name'] }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
 

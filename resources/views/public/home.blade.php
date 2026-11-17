@@ -25,11 +25,11 @@
         <h2 class="section__title">Perjalanan kami</h2>
 
         @php
-            // TODO: ganti dengan isi sebenarnya
+  
             $journey = [
-                ['title' => '1979',    'text' => 'Awal berjualan'],
-                ['title' => 'BLABLA',  'text' => 'BLABLA'],
-                ['title' => 'BLABLA',  'text' => 'BLABLABLA'],
+                ['title' => '1979',    'text' => 'Berawal dari tahun 1979, Warung Pak Atmo hadir membawa cita rasa bakso yang menjadi bagian dari perjalanan kuliner selama puluhan tahun. Dari awal yang sederhana, Warung Pak Atmo terus melangkah untuk melayani pelanggan hingga saat ini.'],
+                ['title' => 'Cita Rasa dan Kualitas',  'text' => 'Kami berkomitmen untuk menyajikan cita rasa bakso yang lezat dan kualitas terbaik setiap hari.'],
+                ['title' => 'Lebih dari Sekadar Warung Bakso',  'text' => 'Kini, Warung Pak Atmo tidak hanya melayani pelanggan melalui dua cabang, tetapi juga menyediakan layanan katering untuk berbagai acara. Mulai dari kebutuhan keluarga hingga kegiatan bersama, kami siap menjadi bagian dari momen spesial Anda.'],
             ];
         @endphp
 
@@ -57,17 +57,4 @@
         </div>
     </div>
 </section>
-
-{{-- CTA KATERING --}}
-<section class="cta">
-    <div class="container cta__inner">
-        <div>
-            <h2>Ada acara keluarga atau kantor?</h2>
-            <p>Booking katering dengan jadwal H-2 dan DP 50%, konfirmasi lewat WhatsApp.</p>
-        </div>
-        {{-- TODO: route katering Sprint 4 --}}
-        <a href="#" class="btn btn--light">Ajukan Pesanan Katering</a>
-    </div>
-</section>
-
 @endsection
