@@ -13,12 +13,11 @@ class RoleMiddlewareTest extends TestCase
     public function test_admin_can_access_dashboard(): void
     {
         $user = User::factory()->create([
-            'role' => 'admin',
-            'is_active' => true,
+            'role' => 'admin', // SESUAIKAN dengan isi file lamamu (nama kolom dan nilai)
         ]);
 
         $this->actingAs($user)
-            ->get('/')
+            ->get('/dashboard')
             ->assertOk();
     }
 
@@ -26,11 +25,10 @@ class RoleMiddlewareTest extends TestCase
     {
         $user = User::factory()->create([
             'role' => 'staff',
-            'is_active' => true,
         ]);
 
         $this->actingAs($user)
-            ->get('/')
+            ->get('/dashboard')
             ->assertOk();
     }
 
@@ -38,23 +36,22 @@ class RoleMiddlewareTest extends TestCase
     {
         $user = User::factory()->create([
             'role' => 'customer',
-            'is_active' => true,
         ]);
 
         $this->actingAs($user)
-            ->get('/')
+            ->get('/dashboard')
             ->assertOk();
     }
 
     public function test_inactive_user_is_logged_out(): void
     {
         $user = User::factory()->create([
-            'role' => 'admin',
-            'is_active' => false,
+            'role'      => 'admin',
+            'is_active' => false, // SESUAIKAN: nama kolom status nonaktif di Sprint 1
         ]);
 
         $this->actingAs($user)
-            ->get('/')
+            ->get('/dashboard')
             ->assertRedirect(route('login'));
 
         $this->assertGuest();
@@ -64,11 +61,10 @@ class RoleMiddlewareTest extends TestCase
     {
         $user = User::factory()->create([
             'role' => 'unknown',
-            'is_active' => true,
         ]);
 
         $this->actingAs($user)
-            ->get('/')
+            ->get('/dashboard')
             ->assertForbidden();
     }
 }
