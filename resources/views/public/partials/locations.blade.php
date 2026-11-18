@@ -1,14 +1,9 @@
-@extends('layouts.public')
-
-@section('title', config('bakso_atmo.name') . ' - Lokasi')
-
-@section('content')
-<section class="section">
+<section id="lokasi" class="section">
     <div class="container">
-        <h1 class="section__title">Lokasi &amp; Kontak</h1>
+        <h2 class="section__title">Lokasi</h2>
 
-        <div class="grid grid--2">
-            @foreach ($branches as $branch)
+        <div class="grid grid--2 slider {{ count(config('bakso_atmo.branches')) > 2 ? 'slider--desktop' : '' }}">
+            @foreach (config('bakso_atmo.branches') as $branch)
                 <div class="info-card">
                     <h3>{{ $branch['name'] }}</h3>
                     <p>{{ $branch['address'] }}</p>
@@ -19,7 +14,5 @@
                 </div>
             @endforeach
         </div>
-
     </div>
 </section>
-@endsection

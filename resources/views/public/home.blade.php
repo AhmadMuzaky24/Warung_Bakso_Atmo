@@ -12,49 +12,72 @@
         <h1>Mie legendaris, dimasak segar setiap hari</h1>
         <p>Lihat menu, harga, dan lokasi dua cabang sebelum berangkat. Butuh makanan untuk acara? Pesan katering prasmanan dari sini.</p>
         <div class="hero__actions">
-            <a href="{{ url('/menu') }}" class="btn btn--light">Lihat Menu &amp; Harga</a>
+            <a href="#menu" class="btn btn--light">Lihat Menu &amp; Harga</a>
             {{-- TODO: route katering Sprint 4 --}}
             <a href="#" class="btn btn--dark">Pesan Katering</a>
         </div>
     </div>
 </section>
 
-{{-- PERJALANAN KAMI --}}
-<section class="section">
+{{-- MENU & HARGA --}}
+<section id="menu" class="section">
     <div class="container">
-        <h2 class="section__title">Perjalanan kami</h2>
+        <h2 class="section__title">Menu &amp; Harga</h2>
 
-        @php
-  
-            $journey = [
-                ['title' => '1979',    'text' => 'Berawal dari tahun 1979, Warung Pak Atmo hadir membawa cita rasa bakso yang menjadi bagian dari perjalanan kuliner selama puluhan tahun. Dari awal yang sederhana, Warung Pak Atmo terus melangkah untuk melayani pelanggan hingga saat ini.'],
-                ['title' => 'Cita Rasa dan Kualitas',  'text' => 'Kami berkomitmen untuk menyajikan cita rasa bakso yang lezat dan kualitas terbaik setiap hari.'],
-                ['title' => 'Lebih dari Sekadar Warung Bakso',  'text' => 'Kini, Warung Pak Atmo tidak hanya melayani pelanggan melalui dua cabang, tetapi juga menyediakan layanan katering untuk berbagai acara. Mulai dari kebutuhan keluarga hingga kegiatan bersama, kami siap menjadi bagian dari momen spesial Anda.'],
-            ];
-        @endphp
+        @if ($categories->isEmpty())
+            <p>Menu belum tersedia.</p>
+        @else
+            <div class="filter-tabs" id="menu-filter">
+                <button type="button" class="filter-tab is-active" data-filter="all">Semua</button>
+                @foreach ($categories as $category)
+                    <button type="button" class="filter-tab" data-filter="{{ $category->id }}">
+                        {{ $category->name }}
+                    </button>
+                @endforeach
+            </div>
 
-        <div class="grid grid--3">
-            @foreach ($journey as $item)
-                <div class="journey-card {{ $loop->first ? 'journey-card--accent' : '' }}">
-                    <h3>{{ $item['title'] }}</h3>
-                    <p>{{ $item['text'] }}</p>
+            @foreach ($categories as $category)
+                <div class="menu-group" data-category="{{ $category->id }}">
+                    <h3 class="menu-group__title">{{ $category->name }}</h3>
+                    @if ($category->description)
+                        <p class="menu-group__desc">{{ $category->description }}</p>
+                    @endif
+
+                    <div class="grid grid--3 slider {{ $category->menus->count() > 3 ? 'slider--desktop' : '' }}">
+                        @foreach ($category->menus as $menu)
+                            <x-menu-card :menu="$menu" />
+                        @endforeach
+                    </div>
                 </div>
             @endforeach
+        @endif
+
+        <div style="margin-top: 28px">
+            <x-marketplace-buttons />
         </div>
     </div>
 </section>
 
-{{-- GALERI --}}
-<section class="section section--tight">
-    <div class="container">
-        <h2 class="section__title">Galeri</h2>
+@push('scripts')
+<script>
+    (function () {
+        var tabs = document.querySelectorAll('#menu-filter .filter-tab');
+        var groups = document.querySelectorAll('.menu-group');
 
-        <div class="grid grid--4">
-            {{-- TODO: ganti div ini dengan <img src="{{ asset('images/galeri/1.jpg') }}" alt="..."> --}}
-            @for ($i = 1; $i <= 4; $i++)
-                <div class="gallery-item"></div>
-            @endfor
-        </div>
-    </div>
-</section>
+        tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                var f = tab.dataset.filter;
+                tabs.forEach(function (t) { t.classList.toggle('is-active', t === tab); });
+                groups.forEach(function (g) {
+                    g.hidden = !(f === 'all' || g.dataset.category === f);
+                });
+            });
+        });
+    })();
+</script>
+@endpush
+
+{{-- LOKASI --}}
+@include('public.partials.locations')
+
 @endsection
