@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Public\LocationController;
+use App\Http\Controllers\Public\AboutController;
 use App\Http\Controllers\Public\CatalogController;
 
 Route::get('/', [HomeController::class, 'index'])->name('public.home');
@@ -46,10 +46,9 @@ Route::middleware(['auth', 'role:admin,staff,customer'])->group(function () {
     })->name('dashboard');
 });
 
-Route::get('/lokasi', [LocationController::class, 'index'])->name('public.locations');
+Route::get('/', [HomeController::class, 'index'])->name('public.home');
+Route::get('/perjalanan-kami', [AboutController::class, 'index'])->name('public.about');
 
-Route::get('/menu', [CatalogController::class, 'index'])
-    ->name('public.catalog.index');
-
-Route::get('/menu/{menu}', [CatalogController::class, 'show'])
-    ->name('public.catalog.show');
+// Dilebur ke beranda; URL lama tetap jalan lewat redirect
+Route::get('/menu/{menu}', [CatalogController::class, 'show'])->name('public.menus.show');
+Route::redirect('/lokasi', '/#lokasi')->name('public.locations');
