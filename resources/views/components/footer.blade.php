@@ -20,9 +20,10 @@
         <div>
             <h4>Navigasi</h4>
             <ul>
-                <li><a href="{{ route('public.home') }}">Beranda</a></li>
-                <li><a href="{{ url('/menu') }}">Menu &amp; Harga</a></li>
-                <li><a href="{{ url('/lokasi') }}">Lokasi</a></li>
+               <li><a href="{{ route('public.home') }}">Beranda</a></li>
+                <li><a href="{{ route('public.home') }}#menu">Menu &amp; Harga</a></li>
+                <li><a href="{{ route('public.home') }}#lokasi">Lokasi</a></li>
+                <li><a href="{{ route('public.about') }}">Perjalanan Kami</a></li>
             </ul>
         </div>
 

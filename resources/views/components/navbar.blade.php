@@ -12,9 +12,10 @@
         </button>
 
         <nav class="navbar__menu">
-            <a href="{{ route('public.home') }}" class="{{ request()->is('/') ? 'is-active' : '' }}">Beranda</a>
-            <a href="{{ url('/menu') }}" class="{{ request()->is('menu*') ? 'is-active' : '' }}">Menu &amp; Harga</a>
-            <a href="{{ url('/lokasi') }}" class="{{ request()->is('lokasi*') ? 'is-active' : '' }}">Lokasi</a>
+            <a href="{{ route('public.home') }}" class="{{ request()->routeIs('public.home') ? 'is-active' : '' }}">Beranda</a>
+            <a href="{{ route('public.home') }}#menu">Menu &amp; Harga</a>
+            <a href="{{ route('public.home') }}#lokasi">Lokasi</a>
+            <a href="{{ route('public.about') }}" class="{{ request()->routeIs('public.about') ? 'is-active' : '' }}">Perjalanan Kami</a>
             <a href="{{ Route::has('login') ? route('login') : '#' }}">Masuk</a>
 
             {{-- TODO: arahkan ke route katering Customer (Sprint 4) --}}
