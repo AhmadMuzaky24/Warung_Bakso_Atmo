@@ -68,32 +68,24 @@ main.has-solid-nav { padding-top: 78px; }
 .grid--3 { grid-template-columns: repeat(3, 1fr); }
 .grid--4 { grid-template-columns: repeat(4, 1fr); }
 
-/* Perjalanan kami */
+/* ===== Perjalanan Kami: kartu ===== */
 .journey-card {
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    cursor: default;
-    background: var(--mint);
-    border-radius: 18px;
-    padding: 24px;
-    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
+    min-height: 0;
+    padding: 44px 28px 40px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 20px rgba(35, 23, 7, .08);
     transition: transform .3s ease, box-shadow .3s ease, color .3s ease;
 }
-.journey-card:first-child { background: #fff; }
-.journey-card h3 { font-weight: 700; line-height: 1.5; }
-.journey-card p {
-    text-align: justify;
-    text-justify: inter-word;
-    hyphens: auto;
-}
 
-.journey-card:nth-child(1) h3 { font-size: 44px; }
-.journey-card:nth-child(2) h3 { font-size: 44px; }
-.journey-card:nth-child(3) h3 { font-size: 44px; }
-
-/* Lapisan gradasi emas, di-fade in lewat opacity */
+/* Lapisan emas saat hover */
 .journey-card::before {
     content: '';
     position: absolute;
@@ -103,12 +95,84 @@ main.has-solid-nav { padding-top: 78px; }
     opacity: 0;
     transition: opacity .3s ease;
 }
+.journey-card:hover::before {
+    opacity: 1;
+}
+
+/* Garis aksen tipis di atas kartu */
+.journey-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--gold-1), var(--brown-hero-1));
+}
+
+.journey-card__icon {
+    width: 84px;
+    height: 84px;
+    flex: 0 0 84px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #fde6d3, #f8cfae);
+    color: var(--brown-hero-1);
+    margin-bottom: 22px;
+    transition: background .3s ease, color .3s ease, transform .3s ease;
+}
+.journey-card__icon svg {
+    width: 40px;
+    height: 40px;
+}
+
+.journey-card h3 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* Garis kecil pemisah di bawah judul */
+.journey-card h3::after {
+    content: '';
+    display: block;
+    width: 44px;
+    height: 3px;
+    margin: 14px auto 0;
+    border-radius: 3px;
+    background: var(--brown-hero-1);
+    transition: background .3s ease;
+}
+
+.journey-card p {
+    margin-top: 16px;
+    font-size: 17px;
+    line-height: 1.75;
+    text-align: center;
+    hyphens: manual;
+    opacity: .85;
+}
+
+/* Hover */
 .journey-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 32px rgba(111, 64, 21, .35);
+    box-shadow: 0 18px 36px rgba(111, 64, 21, .35);
     color: #fff;
 }
-.journey-card:hover::before { opacity: 1; }
+.journey-card:hover p { opacity: 1; }
+.journey-card:hover .journey-card__icon {
+    background: rgba(255, 255, 255, .22);
+    color: #fff;
+    transform: scale(1.08);
+}
+.journey-card:hover h3::after { background: var(--peach); }
+.journey-card:hover::after { opacity: 0; }
+
+@media (max-width: 680px) {
+    .journey-card { padding: 36px 22px 32px; }
+    .journey-card h3 { font-size: 24px; }
+    .journey-card p { font-size: 16px; }
+}
 
 /* Galeri */
 .gallery-item {
