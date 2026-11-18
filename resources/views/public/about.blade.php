@@ -51,10 +51,10 @@
 
         @php
             $photos = [
-                ['file' => '1.jpg', 'alt' => 'Semangkuk bakso urat'],
-                ['file' => '2.jpg', 'alt' => 'Suasana warung'],
-                ['file' => '3.jpg', 'alt' => 'Proses memasak mie'],
-                ['file' => '4.jpg', 'alt' => 'Paket katering'],
+                ['file' => 'mie-bakso-es-teh.jpg', 'alt' => 'Semangkuk mie bakso dengan es teh'],
+                ['file' => 'tampak-depan-warung.jpg', 'alt' => 'Tampak depan warung Pak Atmo di malam hari'],
+                ['file' => 'suasana-warung.jpg', 'alt' => 'Suasana ruang makan warung Pak Atmo'],
+                ['file' => 'mie-ayam-bakso.jpg', 'alt' => 'Mie ayam bakso porsi lengkap'],
             ];
         @endphp
 
