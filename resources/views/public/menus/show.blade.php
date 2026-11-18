@@ -17,7 +17,7 @@
             </div>
 
             <div class="menu-detail__info">
-                <span class="badge">{{ $menu->category->name }}</span>
+                <span class="badge badge--category">{{ $menu->category->name }}</span>
                 <h1>{{ $menu->name }}</h1>
                 <p class="menu-detail__price">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
 

@@ -374,3 +374,6 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
     padding: 110px 0 70px; /* ruang untuk navbar di atas */
 }
 .hero .container { width: 100%; }
+
+/* Badge kategori di detail menu */
+.badge--category { background: var(--brown-hero-1); color: #fff; }
