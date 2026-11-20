@@ -18,6 +18,12 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/login', [AuthController::class, 'login'])
         ->name('login.store');
+
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
+
+    Route::post('/register', [AuthController::class, 'register'])
+        ->middleware('throttle:10,1')
+        ->name('register.store');
 });
 
 Route::middleware(['auth', 'role:admin'])
@@ -52,3 +58,12 @@ Route::get('/perjalanan-kami', [AboutController::class, 'index'])->name('public.
 // Dilebur ke beranda; URL lama tetap jalan lewat redirect
 Route::get('/menu/{menu}', [CatalogController::class, 'show'])->name('public.menus.show');
 Route::redirect('/lokasi', '/#lokasi')->name('public.locations');
+
+// Sprint 4 — Customer Catering (Contributor 3). Append murni, grup lama tidak diubah.
+Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer.')->group(function () {
+    Route::get('/dashboard', \App\Http\Controllers\Customer\DashboardController::class)->name('dashboard');
+    Route::get('/catering', [\App\Http\Controllers\Customer\CateringOrderController::class, 'index'])->name('catering.index');
+    Route::get('/catering/create', [\App\Http\Controllers\Customer\CateringOrderController::class, 'create'])->name('catering.create');
+    Route::post('/catering', [\App\Http\Controllers\Customer\CateringOrderController::class, 'store'])->name('catering.store');
+    Route::get('/catering/{cateringOrder}', [\App\Http\Controllers\Customer\CateringOrderController::class, 'show'])->name('catering.show');
+});
