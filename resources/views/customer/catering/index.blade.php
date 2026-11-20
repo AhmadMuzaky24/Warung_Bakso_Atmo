@@ -25,6 +25,8 @@
     @endphp
 
     <div class="customer-shell">
+        <a href="{{ route('customer.dashboard') }}" class="back-link">&larr; Kembali ke Dashboard</a>
+
         <div class="customer-page-head">
             <div>
                 <h1>Riwayat Pesanan</h1>

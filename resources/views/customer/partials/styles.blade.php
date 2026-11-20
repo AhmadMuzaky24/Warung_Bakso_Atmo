@@ -84,6 +84,16 @@
         outline: 2px solid #c0440f; outline-offset: 2px;
     }
 
+    /* Tombol pelanggan: feedback hover/active (rev-6). public.css haram disentuh. */
+    .customer-shell .btn,
+    .navbar__menu .btn {
+        transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .1s ease;
+    }
+    .customer-shell .btn--dark:hover { background: #5a2008; }
+    .customer-shell .btn--light:hover { background: #e8ab72; }
+    .customer-shell .btn:active { transform: translateY(1px); }
+    .navbar__menu .btn:hover { filter: brightness(1.08); }
+
     /* Tombol WA di kartu detail: `.customer-card > a` bikin color:inherit + display:block,
        jadi warna teks, display, dan lebar harus dipaksa di sini. */
     .customer-card a.btn--dark {
@@ -117,5 +127,8 @@
 
     @media (prefers-reduced-motion: reduce) {
         .customer-card > a:hover { transform: none; }
+        .customer-shell .btn,
+        .navbar__menu .btn { transition: none; }
+        .customer-shell .btn:active { transform: none; }
     }
 </style>
