@@ -82,12 +82,12 @@
                                    aria-describedby="customer_phone-hint">
                             <small id="customer_phone-hint">Dari akun kamu. Hubungi admin kalau nomornya perlu diubah.</small>
                         @else
-                        <input type="tel" name="customer_phone" id="customer_phone"
+                            <input type="tel" name="customer_phone" id="customer_phone"
                                    value="{{ old('customer_phone', '') }}"
-                               inputmode="tel" autocomplete="tel" required
-                               pattern="^(\+62|62|0)8[1-9][0-9]{6,11}$"
-                               aria-describedby="customer_phone-hint{{ $errors->has('customer_phone') ? ' error-customer_phone' : '' }}"
-                               aria-invalid="{{ $errors->has('customer_phone') ? 'true' : 'false' }}">
+                                   inputmode="tel" autocomplete="tel" required
+                                   pattern="^(\+62|62|0)8[0-9]{8,11}$" minlength="10" maxlength="16"
+                                   aria-describedby="customer_phone-hint{{ $errors->has('customer_phone') ? ' error-customer_phone' : '' }}"
+                                   aria-invalid="{{ $errors->has('customer_phone') ? 'true' : 'false' }}">
                             <small id="customer_phone-hint">Nomor belum tersimpan di akun. Isi manual, contoh: 081234567890 atau +6281234567890</small>
                         @endif
                         @error('customer_phone')

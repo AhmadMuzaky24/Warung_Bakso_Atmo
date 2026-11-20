@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Catering;
 
+use App\Rules\ValidPhoneNumber;
 use App\Support\BookingWindow;
+use App\Support\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -13,12 +15,22 @@ class StoreCateringOrderRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        if (is_string($this->customer_phone)) {
+            // Simpan format seragam; nilai asli dipertahankan kalau tidak valid biar rule yang menolak.
+            $this->merge([
+                'customer_phone' => PhoneNumber::normalize($this->customer_phone) ?? $this->customer_phone,
+            ]);
+        }
+    }
+
     public function rules(): array
     {
         return [
             'event_date' => ['required', 'date', 'after_or_equal:'.BookingWindow::earliestEventDate()->toDateString()],
             'event_address' => ['required', 'string', 'max:255'],
-            'customer_phone' => ['required', 'string', 'max:30', 'regex:/^(\+62|62|0)8[1-9][0-9]{6,11}$/'],
+            'customer_phone' => ['required', 'string', 'max:20', new ValidPhoneNumber],
             'notes' => ['nullable', 'string', 'max:1000'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.menu_id' => ['required', 'integer', Rule::exists('menus', 'id')->where('is_available', true)],
@@ -35,8 +47,7 @@ class StoreCateringOrderRequest extends FormRequest
             'event_address.required' => 'Alamat acara wajib diisi.',
             'event_address.max' => 'Alamat acara maksimal 255 karakter.',
             'customer_phone.required' => 'Nomor HP wajib diisi.',
-            'customer_phone.max' => 'Nomor HP maksimal 30 karakter.',
-            'customer_phone.regex' => 'Format nomor HP tidak valid. Contoh: 081234567890.',
+            'customer_phone.max' => 'Nomor HP maksimal 20 karakter.',
             'notes.max' => 'Catatan maksimal 1000 karakter.',
             'items.required' => 'Pilih minimal satu menu katering.',
             'items.min' => 'Pilih minimal satu menu katering.',

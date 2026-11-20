@@ -199,6 +199,36 @@ class CustomerCateringBookingTest extends TestCase
         $this->assertSame(0, CateringOrder::count());
     }
 
+    public function test_customer_phone_boundary_is_ten_to_thirteen_digits(): void
+    {
+        foreach (['081234567', '08123456789012'] as $invalid) {
+            $this->actingAs($this->customer)
+                ->post('/customer/catering', $this->payload(['customer_phone' => $invalid]))
+                ->assertSessionHasErrors('customer_phone');
+        }
+
+        $this->assertSame(0, CateringOrder::count());
+
+        foreach (['0812345678', '0812345678901'] as $valid) {
+            $this->actingAs($this->customer)
+                ->post('/customer/catering', $this->payload(['customer_phone' => $valid]))
+                ->assertSessionHasNoErrors();
+        }
+
+        $this->assertSame(2, CateringOrder::count());
+    }
+
+    public function test_customer_phone_is_normalized_before_save(): void
+    {
+        $this->actingAs($this->customer)
+            ->post('/customer/catering', $this->payload(['customer_phone' => '+62 812-3456-7890']))
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('catering_orders', [
+            'customer_phone' => '081234567890',
+        ]);
+    }
+
     public function test_unavailable_menu_is_rejected(): void
     {
         $this->actingAs($this->customer)
