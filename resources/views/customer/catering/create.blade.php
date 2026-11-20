@@ -171,9 +171,7 @@
 
                                 <small data-row-subtotal>—</small>
 
-                                @if ($i > 0)
-                                    <button type="button" class="btn btn--light" data-remove-row>Hapus menu ini</button>
-                                @endif
+                                <button type="button" class="btn btn--light" data-remove-row>Hapus menu {{ $i + 1 }}</button>
                             </div>
                         @endforeach
                     </div>
@@ -214,7 +212,7 @@
                     <input type="number" value="1" min="1" max="500" required inputmode="numeric" data-qty
                            aria-label="Jumlah porsi">
                     <small data-row-subtotal>—</small>
-                    <button type="button" class="btn btn--light" data-remove-row>Hapus menu ini</button>
+                    <button type="button" class="btn btn--light" data-remove-row>Hapus menu</button>
                 </div>
             </template>
         @endif
@@ -265,7 +263,10 @@
             }
 
             function reindex() {
-                rowsWrap.querySelectorAll('[data-item-row]').forEach(function (row, i) {
+                var rows = rowsWrap.querySelectorAll('[data-item-row]');
+                var onlyOneRow = rows.length < 2;
+
+                rows.forEach(function (row, i) {
                     var select = row.querySelector('[data-menu-select]');
                     var qty = row.querySelector('[data-qty]');
                     select.name = 'items[' + i + '][menu_id]';
@@ -289,6 +290,12 @@
                         box.id = 'error-items-' + i + '-' + kind;
                         (kind === 'menu_id' ? select : qty).setAttribute('aria-describedby', box.id);
                     });
+
+                    var removeBtn = row.querySelector('[data-remove-row]');
+                    if (removeBtn) {
+                        removeBtn.textContent = 'Hapus menu ' + (i + 1);
+                        removeBtn.hidden = onlyOneRow;
+                    }
                 });
             }
 
@@ -305,8 +312,16 @@
             rowsWrap.addEventListener('click', function (e) {
                 var btn = e.target.closest('[data-remove-row]');
                 if (!btn) { return; }
-                if (rowsWrap.querySelectorAll('[data-item-row]').length < 2) { return; }
-                btn.closest('[data-item-row]').remove();
+
+                var rows = rowsWrap.querySelectorAll('[data-item-row]');
+                if (rows.length < 2) { return; }
+
+                var row = btn.closest('[data-item-row]');
+                var nomor = Array.prototype.indexOf.call(rows, row) + 1;
+
+                if (!window.confirm('Apakah anda yakin ingin menghapus menu ' + nomor + '?')) { return; }
+
+                row.remove();
                 reindex();
                 recalc();
             });
@@ -453,6 +468,7 @@
                 submit.textContent = 'Mengirim…';
             });
 
+            reindex();
             recalc();
         })();
     </script>

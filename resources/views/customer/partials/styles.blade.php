@@ -74,6 +74,9 @@
     .customer-form select:focus-visible, .customer-form textarea:focus-visible {
         outline: 2px solid #c0440f; outline-offset: 2px;
     }
+    /* Baris menu: pemisah visual antar baris + tombol hapus disembunyikan saat tinggal 1 baris */
+    .customer-form [data-item-row] + [data-item-row] { border-top: 1px solid #efe0d0; padding-top: 16px; margin-top: 8px; }
+    .customer-form [hidden] { display: none !important; }
 
     @media (max-width: 680px) {
         .customer-page-head h1 { font-size: 26px; }
