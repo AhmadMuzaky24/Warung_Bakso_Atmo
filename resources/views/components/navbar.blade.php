@@ -16,10 +16,22 @@
             <a href="{{ route('public.home') }}#menu">Menu &amp; Harga</a>
             <a href="{{ route('public.home') }}#lokasi">Lokasi</a>
             <a href="{{ route('public.about') }}" class="{{ request()->routeIs('public.about') ? 'is-active' : '' }}">Perjalanan Kami</a>
-            <a href="{{ Route::has('login') ? route('login') : '#' }}">Masuk</a>
+            @guest
+                <a href="{{ Route::has('login') ? route('login') : '#' }}">Masuk</a>
+            @endguest
 
-            {{-- TODO: arahkan ke route katering Customer (Sprint 4) --}}
-            <a href="#" class="btn btn--light btn--sm">Pesan Katering</a>
+            @auth
+                @if (auth()->user()->role === 'customer')
+                    <a href="{{ route('customer.dashboard') }}" class="{{ request()->routeIs('customer.dashboard') ? 'is-active' : '' }}">Dashboard</a>
+                @else
+                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'is-active' : '' }}">Dashboard</a>
+                @endif
+
+                <form method="POST" action="{{ route('logout') }}" style="display:inline">
+                    @csrf
+                    <button type="submit" class="btn btn--light btn--sm" style="min-height:44px">Keluar</button>
+                </form>
+            @endauth
         </nav>
     </div>
 </header>
