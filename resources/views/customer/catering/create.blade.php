@@ -12,6 +12,7 @@
 
     @php
         $dpPercent = (int) config('bakso_atmo.booking.dp_percent', 50);
+        $accountPhone = auth()->user()->phone;
         $earliestDate = \App\Support\BookingWindow::earliestEventDate();
         $minDate = $earliestDate->toDateString();
         $rows = old('items');
@@ -74,13 +75,21 @@
 
                     <div class="customer-form__row">
                         <label for="customer_phone">Nomor WhatsApp</label>
+                        @if ($accountPhone)
+                            <input type="tel" name="customer_phone" id="customer_phone"
+                                   value="{{ $accountPhone }}"
+                                   inputmode="tel" autocomplete="tel" readonly
+                                   aria-describedby="customer_phone-hint">
+                            <small id="customer_phone-hint">Dari akun kamu. Hubungi admin kalau nomornya perlu diubah.</small>
+                        @else
                         <input type="tel" name="customer_phone" id="customer_phone"
-                               value="{{ old('customer_phone') }}"
+                                   value="{{ old('customer_phone', '') }}"
                                inputmode="tel" autocomplete="tel" required
                                pattern="^(\+62|62|0)8[1-9][0-9]{6,11}$"
                                aria-describedby="customer_phone-hint{{ $errors->has('customer_phone') ? ' error-customer_phone' : '' }}"
                                aria-invalid="{{ $errors->has('customer_phone') ? 'true' : 'false' }}">
-                        <small id="customer_phone-hint">Contoh: 081234567890 atau +6281234567890</small>
+                            <small id="customer_phone-hint">Nomor belum tersimpan di akun. Isi manual, contoh: 081234567890 atau +6281234567890</small>
+                        @endif
                         @error('customer_phone')
                             <small data-error id="error-customer_phone">{{ $message }}</small>
                         @enderror
