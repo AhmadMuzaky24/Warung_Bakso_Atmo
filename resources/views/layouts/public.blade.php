@@ -19,7 +19,7 @@
         @yield('content')
     </main>
 
-    <x-footer />
+    <x-footer :cta="! View::hasSection('hide_footer_cta')" />
 
     <script>
         (function () {
