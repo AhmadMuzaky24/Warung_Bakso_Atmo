@@ -52,6 +52,15 @@
     .customer-total > div { display: flex; justify-content: space-between; gap: 16px; font-variant-numeric: tabular-nums; }
     .customer-total > div:last-child { font-size: 20px; font-weight: 700; }
 
+    /* Kartu "Detail acara" (rev-8/rev-9) — penanda khusus, .customer-total global tidak diubah
+       supaya ringkasan biaya (Subtotal/DP/Sisa bayar) tetap sama.
+       Ditulis SETELAH `.customer-total > div` karena spesifisitasnya sama. */
+    .customer-detail > div { display: grid; grid-template-columns: 7rem 1fr; gap: 2px 16px; align-items: baseline; }
+    .customer-detail > div > span:first-child { font-size: 14px; color: #5f4d3c; font-weight: 600; }
+    .customer-detail > div > span:last-child { min-width: 0; overflow-wrap: anywhere; text-align: left; }
+    /* baris terakhir di kartu ini adalah "Catatan", bukan total: jangan 20px bold */
+    .customer-detail > div:last-child { font-size: inherit; font-weight: 400; }
+
     .customer-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; }
     .customer-badge--submitted { background: #f0bf8c; color: #231707; }
     .customer-badge--processing { background: #fde6d3; color: #6f4015; }
@@ -74,12 +83,31 @@
     .customer-form select:focus-visible, .customer-form textarea:focus-visible {
         outline: 2px solid #c0440f; outline-offset: 2px;
     }
+
+    /* Tombol WA di kartu detail: `.customer-card > a` bikin color:inherit + display:block,
+       jadi warna teks, display, dan lebar harus dipaksa di sini. */
+    .customer-card a.btn--dark {
+        display: flex; align-items: center; justify-content: center;
+        color: #fff; text-align: center;
+        width: 100%; max-width: 340px; margin-inline: auto;
+    }
+    .customer-card a.btn--light {
+        display: inline-flex; align-items: center; justify-content: center;
+        color: #231707; text-align: center;
+    }
+
     /* Baris menu: pemisah visual antar baris + tombol hapus disembunyikan saat tinggal 1 baris */
     .customer-form [data-item-row] + [data-item-row] { border-top: 1px solid #efe0d0; padding-top: 16px; margin-top: 8px; }
     .customer-form [hidden] { display: none !important; }
 
     @media (max-width: 680px) {
         .customer-page-head h1 { font-size: 26px; }
+
+        /* Detail acara: label di atas, isi turun penuh ke bawah (rev-8) */
+        .customer-detail > div { display: block; }
+        .customer-detail > div > span { display: block; }
+        .customer-detail > div > span:first-child { margin-bottom: 2px; }
+        .customer-detail > div > span:last-child { text-align: left; }
         .customer-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
         .customer-table tr { display: block; border-bottom: 1px solid #efe0d0; padding: 12px 0; }
         .customer-table td { display: flex; justify-content: space-between; gap: 12px; border: 0; padding: 6px 0; }

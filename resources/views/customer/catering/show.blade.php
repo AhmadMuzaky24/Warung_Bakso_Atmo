@@ -71,7 +71,7 @@
 
         <div class="customer-card">
             <h2>Detail acara</h2>
-            <div class="customer-total" style="border-top:0;padding-top:0;margin-top:0">
+            <div class="customer-total customer-detail" style="border-top:0;padding-top:0;margin-top:0">
                 <div><span>Tanggal</span><span>{{ $order->event_date->locale('id')->translatedFormat('d F Y') }}</span></div>
                 <div><span>Alamat</span><span>{{ $order->event_address }}</span></div>
                 <div><span>WhatsApp</span><span>{{ $order->customer_phone }}</span></div>
@@ -118,12 +118,16 @@
         <div class="customer-card">
             @if ($whatsappUrl)
                 <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener" class="btn btn--dark">Konfirmasi via WhatsApp</a>
-                <p style="margin-top:12px;font-size:14px;color:#5f4d3c">
+                <p style="margin-top:12px;font-size:14px;color:#5f4d3c;text-align:center;max-width:340px;margin-inline:auto">
                     Kirim kode booking &amp; ringkasan ke admin lewat WhatsApp.
                 </p>
             @else
-                <p style="font-size:14px;color:#5f4d3c">Nomor WhatsApp belum dikonfigurasi</p>
+                <p style="font-size:14px;color:#5f4d3c;text-align:center;max-width:340px;margin-inline:auto">Nomor WhatsApp belum dikonfigurasi</p>
             @endif
+
+            <p style="margin-top:16px">
+                <a href="{{ route('customer.dashboard') }}" class="btn btn--light">Cek Status</a>
+            </p>
         </div>
     </div>
 @endsection
