@@ -20,4 +20,17 @@ return [
         'maps'    => 'https://share.google/jE7rzirmrKY51aFe0',
     ],
     ],
+
+    'booking' => [
+        'min_days_before' => (int) env('BOOKING_MIN_DAYS_BEFORE', 1),
+        'dp_percent'      => (int) env('BOOKING_DP_PERCENT', 50),
+        'cutoff_time'     => env('BOOKING_CUTOFF_TIME', '14:30'),
+    ],
+
+    'whatsapp' => env('BOOKING_WHATSAPP_NUMBER'),
+
+    'registration' => [
+        // Email akun customer dibuat otomatis dari nomor HP (email sintetis, tidak dikirimi surat).
+        'email_placeholder' => 'pelanggan.baksoatmo.local',
+    ],
 ];
