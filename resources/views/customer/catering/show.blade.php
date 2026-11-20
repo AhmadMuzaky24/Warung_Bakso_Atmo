@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Detail Pesanan ' . $order->booking_code . ' - ' . config('bakso_atmo.name'))
+@section('hide_footer_cta', true)
 
 @section('content')
     @once

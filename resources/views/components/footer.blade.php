@@ -1,5 +1,8 @@
+@props(['cta' => true])
+
 <footer class="footer">
     {{-- CTA KATERING --}}
+    @if ($cta)
     <div class="cta">
         <div class="container cta__inner">
             <div>
@@ -9,6 +12,7 @@
             <a href="{{ route('customer.catering.create') }}" class="btn btn--light">Ajukan Pesanan Katering</a>
         </div>
     </div>
+    @endif
 
     <div class="container footer__grid">
         <div>

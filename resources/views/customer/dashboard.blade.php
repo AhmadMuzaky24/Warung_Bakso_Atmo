@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Dashboard Customer - ' . config('bakso_atmo.name'))
+@section('hide_footer_cta', true)
 
 @section('content')
     @once

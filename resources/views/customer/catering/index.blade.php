@@ -1,6 +1,7 @@
 @extends('layouts.public')
 
 @section('title', 'Riwayat Pesanan Katering - ' . config('bakso_atmo.name'))
+@section('hide_footer_cta', true)
 
 @section('content')
     @once
