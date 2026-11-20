@@ -30,8 +30,8 @@
         </article>
 
         <article class="info-card">
-            <small>Alamat Email</small>
-            <strong>{{ auth()->user()->email }}</strong>
+            <small>{{ auth()->user()->phone ? 'Nomor HP' : 'Alamat Email' }}</small>
+            <strong>{{ auth()->user()->phone ?: auth()->user()->email }}</strong>
         </article>
 
         <article class="info-card">
