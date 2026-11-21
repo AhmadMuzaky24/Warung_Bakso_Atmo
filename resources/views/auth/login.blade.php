@@ -41,15 +41,15 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="email" class="form-label">Alamat Email</label>
+                    <label for="login" class="form-label">Email atau Nomor HP</label>
                     <input
-                        type="email"
-                        id="email"
-                        name="email"
+                        type="text"
+                        id="login"
+                        name="login"
                         class="form-control"
-                        value="{{ old('email') }}"
-                        placeholder="nama@email.com"
-                        autocomplete="email"
+                        value="{{ old('login') }}"
+                        placeholder="nama@email.com atau 081234567890"
+                        autocomplete="username"
                         required
                         autofocus
                     >
@@ -81,6 +81,11 @@
                 <button type="submit" class="button button-primary" style="width: 100%;">
                     Masuk ke Sistem
                 </button>
+
+                <p>
+                    Belum punya akun?
+                    <a href="{{ route('register') }}" style="color: var(--color-primary); text-decoration: underline;">Daftar di sini</a>
+                </p>
             </form>
 
             <div class="auth-footer">

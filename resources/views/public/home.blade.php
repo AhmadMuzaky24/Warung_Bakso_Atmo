@@ -13,8 +13,7 @@
         <p>Lihat menu, harga, dan lokasi dua cabang sebelum berangkat. Butuh makanan untuk acara? Pesan katering prasmanan dari sini.</p>
         <div class="hero__actions">
             <a href="#menu" class="btn btn--light">Lihat Menu &amp; Harga</a>
-            {{-- TODO: route katering Sprint 4 --}}
-            <a href="#" class="btn btn--dark">Pesan Katering</a>
+            <a href="{{ route('customer.catering.create') }}" class="btn btn--dark">Pesan Katering</a>
         </div>
     </div>
 </section>

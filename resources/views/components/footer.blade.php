@@ -1,15 +1,18 @@
+@props(['cta' => true])
+
 <footer class="footer">
     {{-- CTA KATERING --}}
+    @if ($cta)
     <div class="cta">
         <div class="container cta__inner">
             <div>
                 <h2>Ada acara keluarga atau kantor?</h2>
-                <p>Booking katering dengan jadwal H-2 dan DP 50%, konfirmasi lewat WhatsApp.</p>
+                <p>Booking katering dengan jadwal minimal {{ config('bakso_atmo.booking.min_days_before') }} hari sebelumnya, pemesanan H-1 ditutup pukul {{ \App\Support\BookingWindow::cutoffTime() }} WIB, dan DP {{ config('bakso_atmo.booking.dp_percent') }}%.</p>
             </div>
-            {{-- TODO: arahkan ke route katering Customer (Sprint 4) --}}
-            <a href="#" class="btn btn--light">Ajukan Pesanan Katering</a>
+            <a href="{{ route('customer.catering.create') }}" class="btn btn--light">Ajukan Pesanan Katering</a>
         </div>
     </div>
+    @endif
 
     <div class="container footer__grid">
         <div>

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\User;
+use App\Support\PhoneNumber;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,28 +26,46 @@ class AuthController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         $credentials = $request->validated();
+        $identifier = $credentials['login'];
+        $phone = PhoneNumber::normalize($identifier);
 
         $key = Str::transliterate(
-            Str::lower($credentials['email']).'|'.$request->ip()
+            Str::lower($phone ?? $identifier).'|'.$request->ip()
         );
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             throw ValidationException::withMessages([
-                'email' => 'Terlalu banyak percobaan login. Silakan coba kembali beberapa saat lagi.',
+                'login' => 'Terlalu banyak percobaan login. Silakan coba kembali beberapa saat lagi.',
             ]);
         }
 
-        $authenticated = Auth::attempt([
-            'email' => $credentials['email'],
-            'password' => $credentials['password'],
-            'is_active' => true,
-        ], $request->boolean('remember'));
+        // Email dicoba lebih dulu (admin/staff tidak berubah), lalu nomor HP.
+        // Dua varian email: apa adanya + lowercase, karena MySQL (CI) dan SQLite (BINARY) beda perilaku.
+        $emails = array_unique([trim($identifier), Str::lower(trim($identifier))]);
+
+        $attempts = array_map(static fn (string $email): array => ['email' => $email], $emails);
+
+        if ($phone !== null) {
+            $attempts[] = ['phone' => $phone];
+        }
+
+        $authenticated = false;
+
+        foreach ($attempts as $fields) {
+            if (Auth::attempt($fields + [
+                'password' => $credentials['password'],
+                'is_active' => true,
+            ], $request->boolean('remember'))) {
+                $authenticated = true;
+                break;
+            }
+        }
 
         if (! $authenticated) {
             RateLimiter::hit($key, 60);
 
             throw ValidationException::withMessages([
-                'email' => 'Email atau password tidak valid, atau akun tidak aktif.',
+                'login' => 'Email/nomor HP atau password tidak valid, atau akun tidak aktif.',
             ]);
         }
 
@@ -53,6 +74,30 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended('/');
+    }
+
+    public function showRegisterForm(): View
+    {
+        return view('auth.register');
+    }
+
+    public function register(RegisterRequest $request): RedirectResponse
+    {
+        $phone = $request->validated('phone');
+
+        $user = User::create([
+            'name' => $request->validated('name'),
+            'phone' => $phone,
+            'email' => $phone.'@'.config('bakso_atmo.registration.email_placeholder'),
+            'password' => $request->validated('password'),
+            'role' => 'customer',
+            'is_active' => true,
+        ]);
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('customer.dashboard'));
     }
 
     public function logout(Request $request): RedirectResponse
