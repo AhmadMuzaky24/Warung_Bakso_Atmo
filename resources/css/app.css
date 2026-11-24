@@ -739,6 +739,108 @@ button {
     font-size: 14px;
 }
 
+/* Pesanan katering (Sprint 5) */
+
+.badge-submitted,
+.badge-pending {
+    background: #fdf1d8;
+    color: #7a4a12;
+}
+
+.badge-processing {
+    background: #edf0fa;
+    color: #53649b;
+}
+
+.badge-completed,
+.badge-verified {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.badge-rejected {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.filter-form .form-group {
+    margin: 0;
+}
+
+.filter-form .form-group--search {
+    flex: 1 1 220px;
+}
+
+.filter-form .form-label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 11px;
+}
+
+.badge-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.detail-list {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 10px 16px;
+    margin: 0;
+}
+
+.detail-list dt {
+    color: var(--color-muted);
+    font-size: 12px;
+}
+
+.detail-list dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.summary-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+}
+
+.summary-list > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.summary-list > div:last-child {
+    font-weight: 700;
+}
+
+.panel-stack > .panel + .panel {
+    margin-top: 20px;
+}
+
+.text-right {
+    text-align: right;
+}
+
 /* Responsive */
 
 @media (max-width: 900px) {
@@ -832,5 +934,20 @@ button {
     .panel-header {
         align-items: flex-start;
         flex-direction: column;
+    }
+}
+
+@media (max-width: 900px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-list {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .detail-list dd {
+        margin-bottom: 10px;
     }
 }

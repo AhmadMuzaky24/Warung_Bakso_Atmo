@@ -24,11 +24,25 @@
                 <span class="sidebar-label">MENU UTAMA</span>
 
                 <nav class="sidebar-nav">
-                    <a href="{{ route('dashboard') }}"
-                       class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <span class="nav-icon">⌂</span>
-                        <span>Dashboard</span>
-                    </a>
+                    @if (auth()->user()->role === 'staff')
+                        <a href="{{ route('staff.dashboard') }}"
+                           class="nav-link {{ request()->routeIs('staff.dashboard') ? 'active' : '' }}">
+                            <span class="nav-icon">⌂</span>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <a href="{{ route('staff.catering.index') }}"
+                           class="nav-link {{ request()->routeIs('staff.catering.*') ? 'active' : '' }}">
+                            <span class="nav-icon">☰</span>
+                            <span>Pesanan Katering</span>
+                        </a>
+                    @else
+                        <a href="{{ route('dashboard') }}"
+                           class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <span class="nav-icon">⌂</span>
+                            <span>Dashboard</span>
+                        </a>
+                    @endif
 
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ route('admin.users.index') }}"
@@ -47,6 +61,12 @@
                            class="nav-link {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}">
                             <span class="nav-icon">♨</span>
                             <span>Daftar Menu</span>
+                        </a>
+
+                        <a href="{{ route('admin.catering.index') }}"
+                           class="nav-link {{ request()->routeIs('admin.catering.*') ? 'active' : '' }}">
+                            <span class="nav-icon">☰</span>
+                            <span>Pesanan Katering</span>
                         </a>
                     @endif
                 </nav>
@@ -84,7 +104,7 @@
         <div class="main-area">
             <header class="topbar">
                 <div>
-                    <span class="topbar-label">BAKSO ATMO / ADMINISTRATION</span>
+                    <span class="topbar-label">BAKSO ATMO / {{ auth()->user()->role === 'staff' ? 'OPERASIONAL' : 'ADMINISTRATION' }}</span>
                     <span class="topbar-date">{{ now()->translatedFormat('l, d F Y') }}</span>
                 </div>
 

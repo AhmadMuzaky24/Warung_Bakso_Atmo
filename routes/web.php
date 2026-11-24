@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\CateringOrderController as AdminCateringOrderController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Staff\CateringOrderController as StaffCateringOrderController;
+use App\Http\Controllers\Staff\DashboardController as StaffDashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Public\AboutController;
 use App\Http\Controllers\Public\CatalogController;
@@ -36,6 +39,13 @@ Route::middleware(['auth', 'role:admin'])
             ->except(['show']);
         Route::resource('menus', MenuController::class)
             ->except(['show']);
+        // Sprint 5 — Admin: daftar/detail pesanan + verifikasi pembayaran (payment_status saja).
+        Route::get('/catering', [AdminCateringOrderController::class, 'index'])
+            ->name('catering.index');
+        Route::get('/catering/{cateringOrder}', [AdminCateringOrderController::class, 'show'])
+            ->name('catering.show');
+        Route::patch('/catering/{cateringOrder}/payment-status', [AdminCateringOrderController::class, 'updatePaymentStatus'])
+            ->name('catering.update-payment-status');
     });
 
 Route::middleware(['auth', 'role:admin,staff,customer'])->group(function () {
@@ -66,4 +76,14 @@ Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer
     Route::get('/catering/create', [\App\Http\Controllers\Customer\CateringOrderController::class, 'create'])->name('catering.create');
     Route::post('/catering', [\App\Http\Controllers\Customer\CateringOrderController::class, 'store'])->name('catering.store');
     Route::get('/catering/{cateringOrder}', [\App\Http\Controllers\Customer\CateringOrderController::class, 'show'])->name('catering.show');
+});
+
+// Sprint 5 — Staff Operations (Contributor 4). Staff hanya mengubah `status`;
+// tidak ada route untuk `payment_status` di area ini.
+Route::middleware(['auth', 'role:staff'])->prefix('staff')->name('staff.')->group(function () {
+    Route::get('/dashboard', StaffDashboardController::class)->name('dashboard');
+    Route::get('/catering', [StaffCateringOrderController::class, 'index'])->name('catering.index');
+    Route::get('/catering/{cateringOrder}', [StaffCateringOrderController::class, 'show'])->name('catering.show');
+    Route::patch('/catering/{cateringOrder}/status', [StaffCateringOrderController::class, 'updateStatus'])
+        ->name('catering.update-status');
 });
