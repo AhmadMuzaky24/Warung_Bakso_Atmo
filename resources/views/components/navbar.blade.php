@@ -23,6 +23,8 @@
             @auth
                 @if (auth()->user()->role === 'customer')
                     <a href="{{ route('customer.dashboard') }}" class="{{ request()->routeIs('customer.dashboard') ? 'is-active' : '' }}">Dashboard</a>
+                @elseif (auth()->user()->role === 'staff')
+                    <a href="{{ route('staff.dashboard') }}" class="{{ request()->routeIs('staff.*') ? 'is-active' : '' }}">Dashboard</a>
                 @else
                     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'is-active' : '' }}">Dashboard</a>
                 @endif
