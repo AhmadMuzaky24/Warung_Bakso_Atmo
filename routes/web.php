@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\CateringOrderController as AdminCateringOrderController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Public\HomeController;
@@ -33,6 +35,8 @@ Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+        Route::get('/dashboard', AdminDashboardController::class)
+            ->name('dashboard');
         Route::resource('users', UserController::class)
             ->except(['show']);
         Route::resource('categories', CategoryController::class)
@@ -46,6 +50,11 @@ Route::middleware(['auth', 'role:admin'])
             ->name('catering.show');
         Route::patch('/catering/{cateringOrder}/payment-status', [AdminCateringOrderController::class, 'updatePaymentStatus'])
             ->name('catering.update-payment-status');
+        // Sprint 6 — Admin: laporan rentang tanggal & ekspor XLSX.
+        Route::get('/reports', [ReportController::class, 'index'])
+            ->name('reports.index');
+        Route::get('/reports/export', [ReportController::class, 'export'])
+            ->name('reports.export');
     });
 
 Route::middleware(['auth', 'role:admin,staff,customer'])->group(function () {

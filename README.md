@@ -31,7 +31,7 @@ Pastikan perangkat telah memiliki:
 2. Masuk ke direktori proyek:
 
     ```bash
-    cd bakso_atmo
+    cd Warung_Bakso_Atmo
     ```
 
 3. Instal dependency PHP:
@@ -52,7 +52,11 @@ Pastikan perangkat telah memiliki:
     cp .env.example .env
     ```
 
-    Pada Windows, file `.env.example` juga dapat disalin secara manual menjadi `.env`.
+    Pada Windows PowerShell, dapat menggunakan:
+
+    ```powershell
+    Copy-Item .env.example .env
+    ```
 
 6. Buat application key:
 
@@ -60,12 +64,19 @@ Pastikan perangkat telah memiliki:
     php artisan key:generate
     ```
 
-7. Buat database MySQL dengan nama yang sesuai konfigurasi `.env`, kemudian sesuaikan konfigurasi koneksi database pada file tersebut.
+7. Buat database MySQL dengan nama yang sesuai konfigurasi `.env` (default: `bakso_atmo`), kemudian sesuaikan konfigurasi koneksi database pada file tersebut.
 
-8. Jalankan migrasi dan seeder:
+8. Jalankan migrasi, seeder, dan symbolic link storage:
 
     ```bash
     php artisan migrate --seed
+    php artisan storage:link
+    ```
+
+    Atau untuk membangun ulang dari database kosong:
+
+    ```bash
+    php artisan migrate:fresh --seed
     ```
 
 ## Menjalankan Aplikasi
@@ -82,42 +93,43 @@ Jalankan frontend development server pada terminal terpisah:
 npm run dev
 ```
 
+*(Untuk mode produksi/build statis tanpa Vite dev server, jalankan `npm run build` lalu `php artisan serve`.)*
+
 Aplikasi dapat diakses melalui:
 
 ```text
 http://localhost:8000
 ```
 
-## Fitur Sprint 1
+## Ringkasan Fitur
 
-Sprint 1 berfokus pada fondasi aplikasi, autentikasi, dan manajemen pengguna.
-
-- Login menggunakan email dan password.
-- Logout dengan invalidasi session.
-- Pembatasan percobaan login.
-- Pemeriksaan status akun aktif.
-- Middleware autentikasi dan otorisasi berdasarkan role.
-- Pengubahan password.
-- Manajemen pengguna oleh admin.
-- Pencegahan penonaktifan akun admin sendiri.
-- Pencegahan penghapusan akun sendiri.
+- **Halaman Publik (Guest):** Beranda / company profile, katalog & detail menu, informasi lokasi/cabang, serta tautan ke GoFood dan ShopeeFood.
+- **Autentikasi & Manajemen User (Sprint 1):** Login (email/nomor HP), registrasi Customer, logout, pembatasan percobaan login, pemeriksaan status aktif, middleware role (`admin`, `staff`, `customer`), ubah password, dan CRUD user oleh Admin.
+- **Kategori & Menu (Sprint 2):** CRUD kategori dan menu oleh Admin lengkap dengan upload foto via Laravel Storage.
+- **Customer Katering (Sprint 4):** Pemesanan katering dengan perhitungan harga/DP di server, snapshot item menu, transaksi atomik, riwayat/detail pesanan milik sendiri, dan konfirmasi WhatsApp.
+- **Operasional Staff & Verifikasi Pembayaran Admin (Sprint 5):** Pemisahan kewenangan status (`Staff` mengubah `status` pesanan; `Admin` memverifikasi `payment_status`), pencarian, filter rentang tanggal, dan pagination.
+- **Dashboard Admin, Laporan & Ekspor XLSX (Sprint 6):** Ringkasan pesanan, keuangan DP, acara mendatang, data master, laporan rentang tanggal, dan ekspor file `.xlsx` (OpenSpout).
 
 ### Role Pengguna
 
-| Role       | Keterangan                                           |
-| ---------- | ---------------------------------------------------- |
-| `admin`    | Memiliki akses ke manajemen pengguna dan area admin. |
-| `staff`    | Pengguna operasional.                                |
-| `customer` | Pengguna pelanggan.                                  |
+| Role       | Keterangan                                                                  |
+| ---------- | --------------------------------------------------------------------------- |
+| `admin`    | Dashboard admin, kelola user/kategori/menu, verifikasi `payment_status`, laporan & ekspor XLSX. |
+| `staff`    | Dashboard operasional dan pengelolaan `status` pesanan katering.            |
+| `customer` | Pemesanan katering serta melihat riwayat dan detail pesanan miliknya sendiri. |
 
-## Akun Pengujian
+## Akun Pengujian & Data Demo
 
-Seeder menyediakan akun berikut untuk keperluan pengujian lokal:
+Seeder menyediakan akun uji berikut untuk keperluan pengembangan dan pengujian lokal (menggunakan data sintetis, bukan data pribadi nyata):
 
 | Email                           | Password            | Role     | Status      |
 | ------------------------------- | ------------------- | -------- | ----------- |
 | `admin.test@baksoatmo.local`    | `BaksoAtmoTest123!` | admin    | Aktif       |
+| `staff.test@baksoatmo.local`    | `BaksoAtmoTest123!` | staff    | Aktif       |
+| `customer.test@baksoatmo.local` | `BaksoAtmoTest123!` | customer | Aktif       |
 | `inactive.test@baksoatmo.local` | `BaksoAtmoTest123!` | customer | Tidak aktif |
+
+Selain akun di atas, `DatabaseSeeder` juga membuat akun customer demo tambahan, 4 kategori, 6 menu contoh beserta gambar, dan **32 pesanan katering demo** lengkap dengan item menu untuk keperluan uji filter, pagination, dashboard, dan laporan XLSX.
 
 Jalankan ulang seeder menggunakan:
 
@@ -125,7 +137,7 @@ Jalankan ulang seeder menggunakan:
 php artisan db:seed
 ```
 
-**Catatan:** Akun tersebut hanya untuk pengembangan dan pengujian lokal. Jangan gunakan kredensial pengujian sebagai akun produksi.
+**Catatan:** Akun dan data tersebut hanya untuk pengembangan dan pengujian lokal. Jangan gunakan kredensial pengujian sebagai akun produksi.
 
 ## Automated Testing
 
@@ -135,12 +147,14 @@ Jalankan seluruh pengujian menggunakan:
 php artisan test
 ```
 
-Pengujian Sprint 1 mencakup:
+Cakupan pengujian mencakup:
 
-- Autentikasi.
-- Otorisasi berdasarkan role.
-- Pengubahan password.
-- Manajemen pengguna admin.
+- Autentikasi, registrasi, role middleware, ubah password, dan manajemen pengguna Admin.
+- CRUD kategori/menu serta upload foto storage.
+- Akses publik Guest dan katalog menu.
+- Pemesanan katering Customer, perhitungan server, dan kepemilikan data (ownership).
+- Pemisahan kewenangan Staff (`status`) & Admin (`payment_status`), pencarian, filter, dan pagination.
+- Dashboard Admin, filter laporan rentang tanggal, ekspor XLSX, dan validasi seeder.
 
 ## Struktur Pengembangan
 

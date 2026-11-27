@@ -12,7 +12,7 @@
 <body>
     <div class="app-shell">
         <aside class="sidebar">
-            <a href="{{ route('dashboard') }}" class="brand">
+            <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : (auth()->user()->role === 'staff' ? route('staff.dashboard') : route('dashboard')) }}" class="brand">
                 <span class="brand-mark">BA</span>
                 <span class="brand-copy">
                     <strong>Bakso Atmo</strong>
@@ -35,6 +35,12 @@
                            class="nav-link {{ request()->routeIs('staff.catering.*') ? 'active' : '' }}">
                             <span class="nav-icon">☰</span>
                             <span>Pesanan Katering</span>
+                        </a>
+                    @elseif (auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <span class="nav-icon">⌂</span>
+                            <span>Dashboard</span>
                         </a>
                     @else
                         <a href="{{ route('dashboard') }}"
@@ -67,6 +73,12 @@
                            class="nav-link {{ request()->routeIs('admin.catering.*') ? 'active' : '' }}">
                             <span class="nav-icon">☰</span>
                             <span>Pesanan Katering</span>
+                        </a>
+
+                        <a href="{{ route('admin.reports.index') }}"
+                           class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                            <span class="nav-icon">⊞</span>
+                            <span>Laporan</span>
                         </a>
                     @endif
                 </nav>

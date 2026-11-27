@@ -951,3 +951,47 @@ button {
         margin-bottom: 10px;
     }
 }
+
+/* Admin Dashboard & Laporan (Sprint 6) */
+
+.page-actions-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.stats-grid .info-card strong {
+    margin-top: 6px;
+    font-size: 20px;
+    line-height: 1.25;
+}
+
+.stat-card--accent {
+    border-color: #e6c6b8;
+    background: linear-gradient(180deg, #fffaf7 0%, #ffffff 100%);
+}
+
+.stat-sub {
+    display: block;
+    margin-top: 6px;
+    color: var(--color-muted);
+    font-size: 11px;
+}
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
